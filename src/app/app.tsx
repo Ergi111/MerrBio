@@ -5,13 +5,16 @@ import { PublicRoutes } from "./PublicRouter";
 import { PrivateRoutes } from "./PrivateRouter";
 import { SignUp } from "../Pages/Auth/SignUp";
 import { SignIn } from "../Pages/Auth/SignIn";
+import ProductsPage from "../Pages/Client/products-page";
+import { LanguageProvider } from "../context/LanguageContext";
+import AuthPage from "../Pages/Client/auth-page";
 
 export const AppLayout = () => {
   return (
-    <div>
+    <LanguageProvider>
       <Outlet />
       <Toaster />
-    </div>
+    </LanguageProvider>
   );
 };
 
@@ -29,6 +32,14 @@ export const App = createBrowserRouter([
           {
             element: <SignIn />,
             path: "/sign-in",
+          },
+          {
+            element: <AuthPage />,
+            path: "/signin",
+          },
+          {
+            element: <ProductsPage />,
+            path: "/products",
           },
         ],
       },
