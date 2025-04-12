@@ -1,8 +1,8 @@
 import { useState } from "react";
 // import { useLanguage } from "../../context/LanguageContext";
 // import { ProductFilter } from "../../components/product/ProductFilter";
-import { ProductGrid } from "../../components/product/ProductGrid";
-import { Navbar } from "../../components/NavBar";
+import { ProductGrid } from "./product/ProductGrid";
+import { Navbar } from "./NavBar";
 
 export default function ProductsPage() {
   // const { t } = useLanguage();

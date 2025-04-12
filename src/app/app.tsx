@@ -3,14 +3,17 @@ import { Toaster } from "sonner";
 import { PublicRoutes } from "./PublicRouter";
 import { PrivateRoutes } from "./PrivateRouter";
 import { SignIn } from "../Pages/Auth/SignIn";
-import ProductsPage from "../Pages/Client/products-page";
+import ProductsPage from "../components/products-page";
 import { LanguageProvider } from "../context/LanguageContext";
-import AuthPage from "../Pages/Client/auth-page";
 import Home from "../Pages/Home/Home";
 import FarmerDashboard from "../Pages/Farmer/farmer-dashboard";
 import FarmerProducts from "../Pages/Farmer/farmer-products";
 import FarmerRequests from "../Pages/Farmer/farmer-requests";
 import { AuthProvider } from "../context/useAuth";
+import AuthLayout from "../Pages/Layout/AuthLayout";
+import { routerPaths } from "../constants/routerPaths";
+import { SignUp } from "../Pages/Auth/SignUp";
+import NotFound from "../components/not-found";
 
 export const AppLayout = () => {
   return (
@@ -26,6 +29,7 @@ export const AppLayout = () => {
 export const App = createBrowserRouter([
   {
     element: <AppLayout />,
+    errorElement: <NotFound />,
     children: [
       {
         element: <PublicRoutes />,
@@ -35,13 +39,19 @@ export const App = createBrowserRouter([
             path: "/",
           },
           {
-            element: <SignIn />,
-            path: "/sign-in",
+            element: <AuthLayout />,
+            children: [
+              {
+                element: <SignIn />,
+                path: routerPaths.signIn,
+              },
+              {
+                element: <SignUp />,
+                path: routerPaths.signUp,
+              },
+            ],
           },
-          {
-            element: <AuthPage />,
-            path: "/signin",
-          },
+
           {
             element: <ProductsPage />,
             path: "/products",

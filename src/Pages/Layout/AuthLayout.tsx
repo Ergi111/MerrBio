@@ -8,7 +8,7 @@ import {
 import { SignUp } from "../Auth/SignUp";
 import { SignIn } from "../Auth/SignIn";
 
-export default function AuthPage() {
+export default function AuthLayout() {
   const { t } = useLanguage();
 
   return (
@@ -47,12 +47,7 @@ export default function AuthPage() {
 
               {/* Auth forms */}
               <div className="md:w-1/2 p-8 md:order-1">
-                <Tabs
-                  // defaultValue="login"
-                  // value={activeTab}
-                  // onValueChange={setActiveTab}
-                  className="w-full"
-                >
+                <Tabs className="w-full">
                   <TabsList className="grid w-full grid-cols-2 mb-6">
                     <TabsTrigger value="login">{t("login")}</TabsTrigger>
                     <TabsTrigger value="register">{t("register")}</TabsTrigger>

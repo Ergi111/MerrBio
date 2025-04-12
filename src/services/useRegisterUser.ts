@@ -31,8 +31,8 @@ export const useRegisterUser = () => {
       });
 
       return user;
-    } catch (err: any) {
-      console.error("Registration error:", err.message);
+    } catch (err) {
+      console.error("Registration error:", err);
       throw err;
     } finally {
       setLoading(false);
