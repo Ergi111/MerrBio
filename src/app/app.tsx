@@ -3,6 +3,8 @@ import Test from "../Pages/test";
 import { Toaster } from "sonner";
 import { PublicRoutes } from "./PublicRouter";
 import { PrivateRoutes } from "./PrivateRouter";
+import { SignUp } from "../Pages/Auth/SignUp";
+import { SignIn } from "../Pages/Auth/SignIn";
 
 export const AppLayout = () => {
   return (
@@ -21,8 +23,12 @@ export const App = createBrowserRouter([
         element: <PublicRoutes />,
         children: [
           {
-            element: <Test />,
+            element: <SignUp />,
             path: "/",
+          },
+          {
+            element: <SignIn />,
+            path: "/sign-in",
           },
         ],
       },
