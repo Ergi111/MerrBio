@@ -3,11 +3,11 @@ import Test from "../Pages/test";
 import { Toaster } from "sonner";
 import { PublicRoutes } from "./PublicRouter";
 import { PrivateRoutes } from "./PrivateRouter";
-import { SignUp } from "../Pages/Auth/SignUp";
 import { SignIn } from "../Pages/Auth/SignIn";
 import ProductsPage from "../Pages/Client/products-page";
 import { LanguageProvider } from "../context/LanguageContext";
 import AuthPage from "../Pages/Client/auth-page";
+import Home from "../Pages/Home/Home";
 
 export const AppLayout = () => {
   return (
@@ -26,7 +26,7 @@ export const App = createBrowserRouter([
         element: <PublicRoutes />,
         children: [
           {
-            element: <SignUp />,
+            element: <Home />,
             path: "/",
           },
           {
