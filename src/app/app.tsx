@@ -20,7 +20,7 @@ export const AppLayout = () => {
     <AuthProvider>
       <LanguageProvider>
         <Outlet />
-        <Toaster />
+        <Toaster richColors />
       </LanguageProvider>
     </AuthProvider>
   );

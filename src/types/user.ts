@@ -3,6 +3,7 @@ export interface IUser {
   email: string;
   createdAt: string;
   role: UserRoleEnum;
+  fullName: string;
 }
 
 export enum UserRoleEnum {

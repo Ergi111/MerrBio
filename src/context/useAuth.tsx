@@ -60,7 +60,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       return null;
     }
   };
-
+  console.log("Current user:", currentUser);
   const signIn = async (email: string, password: string): Promise<IUser> => {
     try {
       const userCredential = await signInWithEmailAndPassword(

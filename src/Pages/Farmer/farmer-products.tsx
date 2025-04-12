@@ -1,16 +1,8 @@
-import { useState } from "react";
 import { useLanguage } from "../../context/LanguageContext";
 // import { useAuth } from "@/hooks/use-auth";
 import { Navbar } from "../../components/NavBar";
 // import { useQuery, useMutation } from "@tanstack/react-query";
-import { ProductForm } from "../../components/product/ProductForm";
 import { Button } from "../../components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "../../components/ui/dialog";
 import {
   Table,
   TableBody,
@@ -19,48 +11,22 @@ import {
   TableHeader,
   TableRow,
 } from "../../components/ui/table";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "../../components/ui/alert-dialog";
 // import { useToast } from "@/hooks/use-toast";
 // import { apiRequest, queryClient } from "@/lib/queryClient";
-import { PlusCircle, Pencil, Trash2, ArrowLeft } from "lucide-react";
-import { Badge } from "../../components/ui/badge";
+import { ArrowLeft, PlusCircle } from "lucide-react";
 import { Link } from "react-router";
+import { AddProductModal } from "../../components/AddProductModal";
+import { DeleteProductModal } from "../../components/product/DeleteProductModal";
+import { EditProductModal } from "../../components/product/EditProductModal";
+import { useFetchFarmerProducts } from "../../services/useGetFarmerProducts";
+import { useAuth } from "../../context/useAuth";
+import { NoDataYet } from "../../components/NoDataYet";
 
 export default function FarmerProducts() {
   const { t } = useLanguage();
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const { currentUser } = useAuth();
 
-  const products = [
-    {
-      id: 1,
-      name: "Tomatoes",
-      price: 2.5,
-      unit: "kg",
-      inStock: true,
-      description: "Fresh and organic tomatoes",
-      category: "Vegetables",
-    },
-    {
-      id: 2,
-      name: "Potatoes",
-      price: 1.5,
-      unit: "kg",
-      inStock: false,
-      description: "High-quality potatoes",
-      category: "Vegetables",
-    },
-  ];
+  const { products, loading } = useFetchFarmerProducts(currentUser?.id);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -86,23 +52,17 @@ export default function FarmerProducts() {
                   </p>
                 </div>
               </div>
-              <Button onClick={() => setIsAddDialogOpen(true)}>
-                <PlusCircle className="h-4 w-4 mr-2" />
-                {t("addProduct")}
-              </Button>
+              <AddProductModal />
             </div>
           </header>
-
           {/* Products Table */}
           <div className="bg-white rounded-lg shadow overflow-hidden">
             {products?.length === 0 ? (
-              <div className="p-8 text-center">
-                <p className="text-gray-500 mb-4">{t("noProductsYet")}</p>
-                <Button onClick={() => setIsAddDialogOpen(true)}>
-                  <PlusCircle className="h-4 w-4 mr-2" />
-                  {t("addFirstProduct")}
-                </Button>
-              </div>
+              <NoDataYet
+                title={t("noProductsYet")}
+                subTitle={t("addProductDescription")}
+                icon={<PlusCircle className="h-8 w-8 text-gray-400" />}
+              />
             ) : (
               <div className="overflow-x-auto">
                 <Table>
@@ -122,17 +82,17 @@ export default function FarmerProducts() {
                       <TableRow key={product.id}>
                         <TableCell className="font-medium">
                           <div>
-                            <span>{product.name}</span>
+                            <span>{product.productName}</span>
                             <p className="text-sm text-gray-500 truncate max-w-xs">
                               {product.description}
                             </p>
                           </div>
                         </TableCell>
                         <TableCell>{product.category}</TableCell>
-                        <TableCell>
+                        {/* <TableCell>
                           €{Number(product.price).toFixed(2)}/{product.unit}
-                        </TableCell>
-                        <TableCell>
+                        </TableCell> */}
+                        {/* <TableCell>
                           <Badge
                             variant={
                               product.inStock ? "default" : "destructive"
@@ -140,17 +100,11 @@ export default function FarmerProducts() {
                           >
                             {product.inStock ? t("inStock") : t("outOfStock")}
                           </Badge>
-                        </TableCell>
+                        </TableCell> */}
                         <TableCell className="text-right">
                           <div className="flex justify-end space-x-2">
-                            <Button size="sm" variant="outline">
-                              <Pencil className="h-4 w-4 mr-1" />
-                              {t("edit")}
-                            </Button>
-                            <Button size="sm" variant="destructive">
-                              <Trash2 className="h-4 w-4 mr-1" />
-                              {t("delete")}
-                            </Button>
+                            <EditProductModal product={product} />
+                            <DeleteProductModal productId={product.id} />
                           </div>
                         </TableCell>
                       </TableRow>
@@ -162,54 +116,6 @@ export default function FarmerProducts() {
           </div>
         </div>
       </div>
-
-      {/* Add Product Dialog */}
-      <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-        <DialogContent className="sm:max-w-[600px]">
-          <DialogHeader>
-            <DialogTitle>{t("addNewProduct")}</DialogTitle>
-          </DialogHeader>
-          <ProductForm onSuccess={() => setIsAddDialogOpen(false)} />
-        </DialogContent>
-      </Dialog>
-
-      {/* Edit Product Dialog */}
-      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="sm:max-w-[600px]">
-          <DialogHeader>
-            <DialogTitle>{t("editProduct")}</DialogTitle>
-          </DialogHeader>
-          {/* {selectedProduct && (
-            <ProductForm
-              product={selectedProduct}
-              onSuccess={() => setIsEditDialogOpen(false)}
-            />
-          )} */}
-        </DialogContent>
-      </Dialog>
-
-      {/* Delete Confirmation Dialog */}
-      <AlertDialog
-        open={isDeleteDialogOpen}
-        onOpenChange={setIsDeleteDialogOpen}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>{t("confirmDelete")}</AlertDialogTitle>
-            <AlertDialogDescription>
-              {t("deleteProductConfirmation")}{" "}
-              {/* <span className="font-medium">{selectedProduct?.name}</span> */}
-              {t("thisActionCannot")}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
-            <AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-              {t("delete")}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   );
 }

@@ -17,19 +17,19 @@ export type InsertUser = z.infer<typeof userSchema>;
 //
 // ✅ PRODUCT SCHEMA
 //
-export const productSchema = z.object({
-  id: z.number().int().optional(),
-  name: z.string().min(1),
-  description: z.string().min(1),
-  price: z.string().regex(/^\d+(\.\d{1,2})?$/, "Invalid price format"),
-  unit: z.string().min(1),
-  category: z.string().min(1),
-  inStock: z.boolean(),
-  farmerId: z.number().int(),
-  farmerName: z.string().min(1),
-});
+// export const productSchema = z.object({
+//   id: z.number().int().optional(),
+//   name: z.string().min(1),
+//   description: z.string().min(1),
+//   price: z.string().regex(/^\d+(\.\d{1,2})?$/, "Invalid price format"),
+//   unit: z.string().min(1),
+//   category: z.string().min(1),
+//   inStock: z.boolean(),
+//   farmerId: z.number().int(),
+//   farmerName: z.string().min(1),
+// });
 
-export type InsertProduct = z.infer<typeof productSchema>;
+// export type InsertProduct = z.infer<typeof productSchema>;
 
 //
 // ✅ PURCHASE REQUEST SCHEMA

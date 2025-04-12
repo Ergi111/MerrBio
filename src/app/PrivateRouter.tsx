@@ -11,9 +11,12 @@ export const PrivateRoutes = () => {
     if (userLoading) {
       return;
     }
+    console.log("User loading:", userLoading);
+    console.log("Is authenticated:", isAuthenticated);
     if (!isAuthenticated) {
       navigate(routerPaths.signIn);
     }
+    console.log("User is authenticated:", isAuthenticated);
   }, [isAuthenticated, navigate, userLoading]);
 
   return <Outlet />;

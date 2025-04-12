@@ -10,7 +10,6 @@ import {
   FormLabel,
   FormMessage,
 } from "../../components/ui/form";
-import { Input } from "../../components/ui/input";
 import { Textarea } from "../../components/ui/textarea";
 import {
   Select,
@@ -19,66 +18,89 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../components/ui/select";
-import { Switch } from "../../components/ui/switch";
 // import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "../../context/LanguageContext";
-import { InsertProduct, productSchema } from "../../schema/schema";
+import { productSchema } from "../../schema/schema";
+import { useCreateProduct } from "../../services/useCreateProduct";
+import { useAuth } from "../../context/useAuth";
+import { FormInput } from "../form/FormInput";
+import { Product } from "../../types/product";
+import { toast } from "sonner";
+import { useUpdateProduct } from "../../services/useUpdateProduct";
 
 interface ProductFormProps {
-  product?: InsertProduct & { inStock?: boolean };
-  onSuccess?: () => void;
+  product?: Product;
+  onSuccess: () => void;
 }
 
-export function ProductForm({ product }: ProductFormProps) {
+export function ProductForm({ product, onSuccess }: ProductFormProps) {
   const { t } = useLanguage();
-  const user = { id: 1, name: "John Doe", role: "farmer" };
-
+  const { createProduct, loading: isCreateLoading } = useCreateProduct();
+  const { editProduct, loading: isEditLoading } = useUpdateProduct();
+  const { currentUser } = useAuth();
   // Extend the product schema with validations
-  const formSchema = productSchema.extend({
-    name: z.string().min(3, { message: t("productNameMin") }),
+  const formSchema = z.object({
+    productName: z.string().min(3, { message: t("productNameMin") }),
     description: z.string().min(10, { message: t("productDescriptionMin") }),
     price: z.string().refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
       message: t("productPricePositive"),
     }),
-    unit: z.string().min(1, { message: t("productUnitRequired") }),
+    // unit: z.string().min(1, { message: t("productUnitRequired") }),
     category: z.string().min(1, { message: t("productCategoryRequired") }),
   });
 
   // Initialize form with existing product data or defaults
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: product
-      ? {
-          ...product,
-          price: product.price.toString(),
-        }
-      : {
-          name: "",
-          description: "",
-          price: "",
-          unit: "kg",
-          category: "",
-          inStock: product?.inStock ?? true,
-          farmerId: user?.id || 0,
-          farmerName: user?.name || "",
-        },
+    defaultValues: {
+      productName: product?.productName || "",
+      description: product?.description || "",
+      price: product?.price ? product.price.toString() : "",
+      // unit: product?.unit || "",
+      category: product?.category || "",
+    },
   });
 
+  const onSubmit = (data: z.infer<typeof formSchema>) => {
+    const productData = {
+      productName: data.productName,
+      description: data.description,
+      price: parseFloat(data.price),
+      // unit: data.unit,
+      category: data.category,
+      farmerId: currentUser?.id || "",
+      farmerName: currentUser?.fullName || "",
+    };
+
+    if (product) {
+      console.log("Editing product", product);
+
+      editProduct({
+        productId: product.id,
+        updatedData: {
+          ...productData,
+        },
+      }).then(() => {
+        onSuccess();
+      });
+      return;
+    } else {
+      createProduct({
+        ...productData,
+      }).then(() => {
+        toast.success("Product created successfully");
+        onSuccess();
+      });
+    }
+  };
+  console.log(form.formState.errors);
   return (
     <Form {...form}>
-      <form className="space-y-4">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("productName")}</FormLabel>
-              <FormControl>
-                <Input placeholder={t("productNamePlaceholder")} {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <FormInput
+          name="productName"
+          label={t("productName")}
+          placeholder={t("productNamePlaceholder")}
         />
 
         <FormField
@@ -99,7 +121,7 @@ export function ProductForm({ product }: ProductFormProps) {
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <FormField
+          {/* <FormField
             control={form.control}
             name="price"
             render={({ field }) => (
@@ -117,37 +139,15 @@ export function ProductForm({ product }: ProductFormProps) {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
 
-          <FormField
-            control={form.control}
-            name="unit"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("productUnit")}</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder={t("selectUnit")} />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="kg">{t("kilogram")}</SelectItem>
-                    <SelectItem value="piece">{t("piece")}</SelectItem>
-                    <SelectItem value="dozen">{t("dozen")}</SelectItem>
-                    <SelectItem value="liter">{t("liter")}</SelectItem>
-                    <SelectItem value="bundle">{t("bundle")}</SelectItem>
-                    <SelectItem value="jar">{t("jar")}</SelectItem>
-                    <SelectItem value="bag">{t("bag")}</SelectItem>
-                    <SelectItem value="box">{t("box")}</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
+          <FormInput
+            name="price"
+            label={t("productPrice")}
+            placeholder={t("productPricePlaceholder")}
+            type="number"
+            step="0.01"
+            min="0"
           />
         </div>
 
@@ -174,24 +174,6 @@ export function ProductForm({ product }: ProductFormProps) {
                 </SelectContent>
               </Select>
               <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="inStock"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-              <div className="space-y-0.5">
-                <FormLabel>{t("inStock")}</FormLabel>
-              </div>
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
             </FormItem>
           )}
         />
