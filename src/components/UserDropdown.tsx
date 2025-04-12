@@ -7,9 +7,11 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown";
 import { useLanguage } from "../context/LanguageContext";
+import { useAuth } from "../context/useAuth";
 
 export const UserDropdown = () => {
   const { t } = useLanguage();
+  const { signOut } = useAuth();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -36,7 +38,7 @@ export const UserDropdown = () => {
             <Link to="/products">{t("browseProducts")}</Link>
           </DropdownMenuItem>
         )} */}
-        <DropdownMenuItem onClick={() => {}}>{t("logout")}</DropdownMenuItem>
+        <DropdownMenuItem onClick={signOut}>{t("logout")}</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

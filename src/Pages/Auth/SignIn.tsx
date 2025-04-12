@@ -32,7 +32,9 @@ export const SignIn = () => {
     try {
       const { email, password } = data;
       console.log("Login data:", data);
-      await signIn(email, password);
+      await signIn(email, password).then(() => {
+        navigate(routerPaths.home);
+      });
     } catch (error) {
       console.error("Login error:", error);
     }

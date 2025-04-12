@@ -9,6 +9,7 @@ import { auth, db } from "../config/firebase-config";
 import { IUser } from "../types/user";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
+import { routerPaths } from "../constants/routerPaths";
 
 // Define the shape of our Auth context
 interface AuthContextType {
@@ -17,6 +18,7 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<IUser>;
   signOut: () => Promise<void>;
   isAuthenticated: boolean;
+  isSignedInLoading: boolean;
 }
 
 // Create the context with default values
@@ -30,18 +32,19 @@ const AuthContext = createContext<AuthContextType>({
     throw new Error("logout function not implemented");
   },
   isAuthenticated: false,
+  isSignedInLoading: false,
 });
 
 // Custom hook to use the auth context
 export const useAuth = () => useContext(AuthContext);
 
-// Provider component to wrap your app
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
   const [userLoading, setUserLoading] = useState(true);
   const navigate = useNavigate();
+  const [isSignedInLoading, setIsSignedInLoading] = useState(true);
 
   // Fetch user data from Firestore
   const fetchUserData = async (uid: string): Promise<IUser | null> => {
@@ -65,6 +68,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         email,
         password
       );
+      setIsSignedInLoading(true);
       const userData = await fetchUserData(userCredential.user.uid);
       if (!userData) {
         toast.error("User not found");
@@ -72,6 +76,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       }
       return userData;
     } catch (error: any) {
+      setIsSignedInLoading(false);
       console.error("Sign in error:", error.message);
       throw error;
     }
@@ -81,7 +86,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       await firebaseSignOut(auth);
       setCurrentUser(null);
-      navigate("/login");
+      navigate(routerPaths.signIn);
     } catch (error) {
       console.error("Logout error:", error);
       throw error;
@@ -97,7 +102,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setCurrentUser(userData);
       } else {
         setCurrentUser(null);
-        navigate("/login");
+        navigate(routerPaths.signIn);
       }
       setUserLoading(false);
     });
@@ -106,12 +111,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     return () => unsubscribe();
   }, [navigate]);
 
-  console.log("currentUser", currentUser);
-  console.log("userLoading", userLoading);
-
   const value: AuthContextType = {
     currentUser,
     userLoading,
+    isSignedInLoading,
     signIn,
     signOut,
     isAuthenticated: !!currentUser,
