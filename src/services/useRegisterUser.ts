@@ -2,14 +2,18 @@ import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../config/firebase-config";
+import { UserRoleEnum } from "../types/user";
 
 export const useRegisterUser = () => {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  const register = async (email: string, password: string) => {
+  const register = async (
+    email: string,
+    password: string,
+    fullName: string,
+    role: UserRoleEnum
+  ) => {
     setLoading(true);
-    setError(null);
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -22,17 +26,18 @@ export const useRegisterUser = () => {
         id: user.uid,
         email: user.email,
         createdAt: new Date().toISOString(),
+        role,
+        fullName,
       });
 
       return user;
     } catch (err: any) {
       console.error("Registration error:", err.message);
-      setError(err.message);
       throw err;
     } finally {
       setLoading(false);
     }
   };
 
-  return { register, loading, error };
+  return { register, loading };
 };

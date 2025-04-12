@@ -1,6 +1,7 @@
 export interface IUser {
   id: string;
   email: string;
+  createdAt: string;
   role: UserRoleEnum;
 }
 

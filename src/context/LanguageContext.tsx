@@ -89,6 +89,8 @@ const dictionary = {
     usernamePlaceholder: "Enter your username",
     password: "Password",
     passwordPlaceholder: "Enter your password",
+    passwordStrength:
+      "Password must contain at least one uppercase letter, one lowercase letter, and one number",
     fullName: "Full Name",
     fullNamePlaceholder: "Enter your full name",
     email: "Email",
@@ -250,6 +252,7 @@ const dictionary = {
     messageError: "Message Error",
     recently: "Recently",
     quantityValueUnit: "Quantity: {{quantity}}",
+    confirmPassword: "Confirm password",
   },
 
   sq: {
@@ -503,6 +506,7 @@ const dictionary = {
     messageError: "Gabim në Mesazh",
     recently: "Së Fundmi",
     quantityValueUnit: "Sasia: {{quantity}}",
+    confirmPassword: "Konfirmo fjalëkalimin",
   },
 };
 

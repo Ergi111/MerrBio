@@ -1,36 +1,86 @@
-import React, { BaseSyntheticEvent } from "react";
-import { useSignIn } from "../../services/useSignIn";
+import { z } from "zod";
+import { FormInput } from "../../components/form/FormInput";
+import { Button } from "../../components/ui/button";
+import { Form } from "../../components/ui/form";
+import { useLanguage } from "../../context/LanguageContext";
+import { useAuth } from "../../context/useAuth";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { routerPaths } from "../../constants/routerPaths";
+import { useNavigate } from "react-router";
 
 export const SignIn = () => {
-  const { signIn } = useSignIn();
+  const navigate = useNavigate();
+  const { signIn } = useAuth();
+  const { t } = useLanguage();
+  const loginSchema = z.object({
+    email: z.string().email({ message: t("emailInvalid") }),
+    password: z.string().min(6, { message: t("passwordMin") }),
+  });
 
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
-  const handleSubmit = (e: BaseSyntheticEvent) => {
-    e.preventDefault();
+  const onLoginSubmit = async (data: z.infer<typeof loginSchema>) => {
+    console.log("Login data:", data);
 
-    signIn(email, password)
-      .then((user) => {
-        console.log("User signed in:", user);
-      })
-      .catch((error) => {
-        console.error("Error signing in:", error);
-      });
+    try {
+      const { email, password } = data;
+      console.log("Login data:", data);
+      await signIn(email, password);
+    } catch (error) {
+      console.error("Login error:", error);
+    }
   };
+
+  console.log("Form errors:", form.formState.errors);
+
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="email"
-        placeholder="Email"
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button type="submit">Sign In</button>
-    </form>
+    <div className="space-y-4">
+      <div className="text-center mb-6">
+        <h3 className="text-2xl font-semibold text-gray-900">
+          {t("welcomeBack")}
+        </h3>
+        <p className="text-gray-500">{t("loginToAccount")}</p>
+      </div>
+
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onLoginSubmit)} className="space-y-4">
+          <FormInput
+            name="email"
+            label={t("email")}
+            placeholder={t("emailPlaceholder")}
+          />
+
+          <FormInput
+            name="password"
+            label={t("password")}
+            placeholder={t("passwordPlaceholder")}
+            type="password"
+          />
+
+          <Button className="w-full">Login</Button>
+        </form>
+      </Form>
+
+      <div className="text-center mt-4">
+        <p className="text-sm text-gray-500">
+          {t("noAccount")}{" "}
+          <Button
+            variant="link"
+            type="submit"
+            className="p-0"
+            onClick={() => navigate(routerPaths.signUp)}
+          >
+            {t("createAccount")}
+          </Button>
+        </p>
+      </div>
+    </div>
   );
 };

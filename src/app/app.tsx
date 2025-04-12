@@ -10,13 +10,16 @@ import Home from "../Pages/Home/Home";
 import FarmerDashboard from "../Pages/Farmer/farmer-dashboard";
 import FarmerProducts from "../Pages/Farmer/farmer-products";
 import FarmerRequests from "../Pages/Farmer/farmer-requests";
+import { AuthProvider } from "../context/useAuth";
 
 export const AppLayout = () => {
   return (
-    <LanguageProvider>
-      <Outlet />
-      <Toaster />
-    </LanguageProvider>
+    <AuthProvider>
+      <LanguageProvider>
+        <Outlet />
+        <Toaster />
+      </LanguageProvider>
+    </AuthProvider>
   );
 };
 

@@ -1,22 +1,18 @@
-import { Link, useLocation } from "react-router"; // Fixed import
+import { Link, useLocation } from "react-router";
 import { useState } from "react";
 import { useLanguage } from "../context/LanguageContext"; // Updated to use alias
 import { Button } from "../components/ui/button"; // Updated to use alias
 
-import { Leaf, Menu, X, Globe, ChevronDown } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../components/ui/dropdown"; // Updated to use alias
+import { Leaf, Menu, X } from "lucide-react";
+import {} from "../components/ui/dropdown";
+import { LanguageDropdown } from "./LanguageDropdown";
+import { UserDropdown } from "./UserDropdown";
 
 export function Navbar() {
-  // Placeholder for user and logoutMutation
   const user = {
     id: 1,
     name: "John Doe",
-    role: "farmer", // or "consumer"
+    role: "farmer",
   };
   const logoutMutation = {
     mutate: async () => {
@@ -69,24 +65,7 @@ export function Navbar() {
               {t("products")}
             </Link>
 
-            {/* Language Selector */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="flex items-center">
-                  <Globe className="h-4 w-4 mr-1" />
-                  <span>{language === "en" ? "EN" : "SQ"}</span>
-                  <ChevronDown className="h-4 w-4 ml-1" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setLanguage("en")}>
-                  English
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setLanguage("sq")}>
-                  Shqip
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <LanguageDropdown />
 
             {/* Auth Buttons or User Menu */}
             {!user ? (
@@ -106,42 +85,7 @@ export function Navbar() {
                 </Link>
               </div>
             ) : (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="flex items-center"
-                  >
-                    <span className="font-medium">{user.name}</span>
-                    <ChevronDown className="h-4 w-4 ml-1" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  {user.role === "farmer" ? (
-                    <>
-                      <DropdownMenuItem asChild>
-                        <Link to="/farmer">{t("dashboard")}</Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link to="/farmer/products">{t("myProducts")}</Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link to="/farmer/requests">
-                          {t("purchaseRequests")}
-                        </Link>
-                      </DropdownMenuItem>
-                    </>
-                  ) : (
-                    <DropdownMenuItem asChild>
-                      <Link to="/products">{t("browseProducts")}</Link>
-                    </DropdownMenuItem>
-                  )}
-                  <DropdownMenuItem onClick={() => logoutMutation.mutate()}>
-                    {t("logout")}
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <UserDropdown />
             )}
           </div>
 
