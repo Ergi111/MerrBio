@@ -23,7 +23,7 @@ export const productSchema = z.object({
   price: z.string().regex(/^\d+(\.\d{1,2})?$/, "Invalid price format"),
   unit: z.string().min(1),
   category: z.string().min(1),
-  inStock: z.boolean().default(true),
+  inStock: z.boolean(),
   farmerId: z.number().int(),
   farmerName: z.string().min(1),
 });

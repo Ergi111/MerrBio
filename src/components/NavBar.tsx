@@ -121,7 +121,7 @@ export function Navbar() {
                   {user.role === "farmer" ? (
                     <>
                       <DropdownMenuItem asChild>
-                        <Link to="/farmer/dashboard">{t("dashboard")}</Link>
+                        <Link to="/farmer">{t("dashboard")}</Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>
                         <Link to="/farmer/products">{t("myProducts")}</Link>

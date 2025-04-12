@@ -1,5 +1,4 @@
 import { createBrowserRouter, Outlet } from "react-router";
-import Test from "../Pages/test";
 import { Toaster } from "sonner";
 import { PublicRoutes } from "./PublicRouter";
 import { PrivateRoutes } from "./PrivateRouter";
@@ -8,6 +7,9 @@ import ProductsPage from "../Pages/Client/products-page";
 import { LanguageProvider } from "../context/LanguageContext";
 import AuthPage from "../Pages/Client/auth-page";
 import Home from "../Pages/Home/Home";
+import FarmerDashboard from "../Pages/Farmer/farmer-dashboard";
+import FarmerProducts from "../Pages/Farmer/farmer-products";
+import FarmerRequests from "../Pages/Farmer/farmer-requests";
 
 export const AppLayout = () => {
   return (
@@ -47,8 +49,16 @@ export const App = createBrowserRouter([
         element: <PrivateRoutes />,
         children: [
           {
-            element: <Test />,
-            path: "/private",
+            element: <FarmerDashboard />,
+            path: "/farmer",
+          },
+          {
+            element: <FarmerProducts />,
+            path: "/farmer/products",
+          },
+          {
+            element: <FarmerRequests />,
+            path: "/farmer/requests",
           },
         ],
       },
