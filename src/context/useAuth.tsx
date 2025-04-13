@@ -44,7 +44,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
   const [userLoading, setUserLoading] = useState(true);
   const navigate = useNavigate();
-  const [isSignedInLoading, setIsSignedInLoading] = useState(true);
+  const [isSignedInLoading, setIsSignedInLoading] = useState(false);
 
   // Fetch user data from Firestore
   const fetchUserData = async (uid: string): Promise<IUser | null> => {
