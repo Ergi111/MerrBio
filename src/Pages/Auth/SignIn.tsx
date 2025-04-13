@@ -12,7 +12,7 @@ import { PasswordInput } from "../../components/PasswordInput";
 
 export const SignIn = () => {
   const navigate = useNavigate();
-  const { signIn } = useAuth();
+  const { signIn, isSignedInLoading } = useAuth();
   const { t } = useLanguage();
   const loginSchema = z.object({
     email: z.string().email({ message: t("emailInvalid") }),
@@ -77,6 +77,7 @@ export const SignIn = () => {
             variant="link"
             type="submit"
             className="p-0"
+            disabled={isSignedInLoading}
             onClick={() => navigate(routerPaths.signUp)}
           >
             {t("createAccount")}
