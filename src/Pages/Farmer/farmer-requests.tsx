@@ -20,7 +20,7 @@ import {
 } from "../../components/ui/dialog";
 import { Badge } from "../../components/ui/badge";
 import { Textarea } from "../../components/ui/textarea";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import {
   ArrowLeft,
   CheckCircle2,
@@ -30,7 +30,6 @@ import {
   Package,
   Truck,
 } from "lucide-react";
-// import { InsertPurchaseRequest } from "../../schema/schema";
 
 type Request = {
   id: number;
@@ -46,7 +45,7 @@ export default function FarmerRequests() {
   const { t } = useLanguage();
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [messageToConsumer, setMessageToConsumer] = useState("");
-
+  const navigate = useNavigate();
   const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
 
   const requests = [
@@ -106,18 +105,19 @@ export default function FarmerRequests() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
-
       <div className="flex-grow bg-gray-50 py-8">
         <div className="container mx-auto px-4">
           <header className="mb-8">
-            <div className="flex items-center mb-4">
-              <Link to="/farmer">
-                <Button variant="ghost" size="sm" className="mr-2">
-                  <ArrowLeft className="h-4 w-4 mr-1" />
-                  {t("back")}
-                </Button>
-              </Link>
+            <div className="flex flex-col items-start mb-4">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="mr-2"
+                onClick={() => navigate(-1)}
+              >
+                <ArrowLeft className="h-4 w-4 mr-1" />
+                {t("back")}
+              </Button>
               <div>
                 <h1 className="text-3xl font-bold text-gray-900">
                   {t("purchaseRequests")}

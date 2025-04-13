@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { routerPaths } from "../../constants/routerPaths";
 import { useNavigate } from "react-router";
+import { PasswordInput } from "../../components/PasswordInput";
 
 export const SignIn = () => {
   const navigate = useNavigate();
@@ -59,11 +60,10 @@ export const SignIn = () => {
             placeholder={t("emailPlaceholder")}
           />
 
-          <FormInput
+          <PasswordInput
             name="password"
             label={t("password")}
             placeholder={t("passwordPlaceholder")}
-            type="password"
           />
 
           <Button className="w-full">Login</Button>

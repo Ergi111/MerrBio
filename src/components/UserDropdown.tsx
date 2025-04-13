@@ -15,7 +15,6 @@ export const UserDropdown = () => {
   const { t } = useLanguage();
   const { signOut, currentUser, isAuthenticated } = useAuth();
   const { isFarmer, isAdmin } = getRoleFlags(currentUser?.role);
-
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger className="cursor-pointer">
@@ -24,14 +23,11 @@ export const UserDropdown = () => {
       <DropdownMenuContent align="end">
         {isAdmin && (
           <DropdownMenuItem asChild>
-            <Link to={routerPaths.adminDashboard}>{t("adminDashboard")}</Link>
+            <Link to={routerPaths.adminDashboard}>{t("dashboard")}</Link>
           </DropdownMenuItem>
         )}
         {isFarmer && (
           <>
-            <DropdownMenuItem asChild>
-              <Link to="/farmer/dashboard">{t("dashboard")}</Link>
-            </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link to="/farmer/products">{t("myProducts")}</Link>
             </DropdownMenuItem>

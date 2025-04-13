@@ -26,8 +26,8 @@ export const DeleteProductModal = ({ productId }: { productId: string }) => {
   return (
     <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant="destructive">
-          <Trash2 className="h-4 w-4 mr-2" />
+        <Button variant="destructive" className="text-white gap-1">
+          <Trash2 className="h-4 w-4 mr-2" color="#fff" />
           {t("delete")}
         </Button>
       </AlertDialogTrigger>

@@ -42,27 +42,32 @@ export function ProductCard({ product }: ProductCardProps) {
     }
   };
 
-  // // Placeholder images for products by category
-  // const getCategoryImage = (category: string) => {
-  //   switch (category.toLowerCase()) {
-  //     case "vegetables":
-  //       return "https://images.unsplash.com/photo-1519996529931-28324d5a630e?auto=format&fit=crop&w=800&h=400&q=80";
-  //     case "fruits":
-  //       return "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=800&h=400&q=80";
-  //     case "dairy":
-  //       return "https://images.unsplash.com/photo-1621265838864-d814e5a33b78?auto=format&fit=crop&w=800&h=400&q=80";
-  //     case "meat":
-  //       return "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=800&h=400&q=80";
-  //     case "poultry":
-  //       return "https://images.unsplash.com/photo-1571680322279-a226e7259614?auto=format&fit=crop&w=800&h=400&q=80";
-  //     case "bakery":
-  //       return "https://images.unsplash.com/photo-1589927986089-35812388d1f4?auto=format&fit=crop&w=800&h=400&q=80";
-  //     case "specialty":
-  //       return "https://images.unsplash.com/photo-1628689469838-524a4a973b8e?auto=format&fit=crop&w=800&h=400&q=80";
-  //     default:
-  //       return "https://images.unsplash.com/photo-1595506635416-cd66df435f07?auto=format&fit=crop&w=800&h=400&q=80";
-  //   }
-  // };
+  // Placeholder images for products by category
+  const getCategoryImage = (category: string) => {
+    switch (category.toLowerCase()) {
+      case "vegetables":
+        return "https://images.unsplash.com/photo-1519996529931-28324d5a630e?auto=format&fit=crop&w=800&h=400&q=80";
+      case "fruits":
+        return "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=800&h=400&q=80";
+      case "dairy":
+        return "https://images.unsplash.com/photo-1621265838864-d814e5a33b78?auto=format&fit=crop&w=800&h=400&q=80";
+      case "meat":
+        return "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=800&h=400&q=80";
+      case "poultry":
+        return "https://images.unsplash.com/photo-1571680322279-a226e7259614?auto=format&fit=crop&w=800&h=400&q=80";
+      case "bakery":
+        return "https://images.unsplash.com/photo-1589927986089-35812388d1f4?auto=format&fit=crop&w=800&h=400&q=80";
+      case "specialty":
+        return "https://images.unsplash.com/photo-1628689469838-524a4a973b8e?auto=format&fit=crop&w=800&h=400&q=80";
+      default:
+        return "https://images.unsplash.com/photo-1595506635416-cd66df435f07?auto=format&fit=crop&w=800&h=400&q=80";
+    }
+  };
+  const formattedPrice = Number(product.price).toLocaleString("en-US", {
+    style: "decimal",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
 
   return (
     <>
@@ -72,8 +77,8 @@ export function ProductCard({ product }: ProductCardProps) {
       >
         <div className="relative h-48 w-full overflow-hidden">
           <img
-            // src={getCategoryImage(product.category)}
-            src={product.imageUrl}
+            src={getCategoryImage(product.category)}
+            // src={product.imageUrl}
             alt={product.imageUrl}
             className="w-full h-full object-cover transition-transform hover:scale-105 duration-300"
           />
@@ -93,7 +98,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <div className="flex justify-between items-center">
             <span className="text-lg font-semibold text-gray-900">
               {/* €{Number(product.price).toFixed(2)}/{product.unit} */}€
-              {Number(product.price).toFixed(2)}/kg
+              {formattedPrice}/kg
             </span>
             <Button
               size="sm"

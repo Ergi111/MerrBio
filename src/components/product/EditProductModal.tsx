@@ -21,7 +21,7 @@ export const EditProductModal = ({ product }: EditProductModalProps) => {
   return (
     <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" variant="outline">
+        <Button variant="outline" className="gap-1">
           <Pencil className="h-4 w-4 mr-1" />
           {t("edit")}
         </Button>

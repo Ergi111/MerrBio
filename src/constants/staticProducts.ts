@@ -30,7 +30,7 @@ export const staticProducts = [
     farmerId: 103,
     farmerName: "Sunny Side Farm",
     imageUrl:
-      "https://images.pexels.com/photos/1625385/pexels-photo-1625385.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      "https://images.pexels.com/photos/2985167/pexels-photo-2985167.jpeg?auto=compress&cs=tinysrgb&w=1200",
   },
   {
     id: 4,

@@ -1,156 +1,90 @@
 import { ProductCard } from "./ProductCard";
 import { useLanguage } from "../../context/LanguageContext";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "../ui/pagination";
 import { Product } from "../../types/product";
 import { NoDataIcon } from "../../assets/icons/NoDataIcon";
+import { Input } from "../ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface ProductGridProps {
   products: Product[];
-  currentPage: number;
-  totalPages: number;
-  onPageChange: (page: number) => void;
+  sort: "asc" | "desc";
+  setSort: () => void;
+  search: string;
+  setSearch: (value: string) => void;
 }
 
 export function ProductGrid({
   products,
-  currentPage,
-  totalPages,
-  onPageChange,
+  sort,
+  setSort,
+  search,
+  setSearch,
 }: ProductGridProps) {
   const { t } = useLanguage();
 
-  if (products.length === 0) {
-    return (
-      <div className="w-full text-center py-12 flex flex-col items-center justify-center gap-4">
-        <p className="text-gray-500 text-lg">{t("noProductsFound")}</p>
-        <div>
-          <NoDataIcon />
-        </div>
-      </div>
-    );
-  }
-
-  const renderPaginationItems = () => {
-    const items = [];
-    const maxVisiblePages = 5;
-
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-
-    if (endPage - startPage + 1 < maxVisiblePages) {
-      startPage = Math.max(1, endPage - maxVisiblePages + 1);
-    }
-
-    for (let i = startPage; i <= endPage; i++) {
-      items.push(
-        <PaginationItem key={i}>
-          <PaginationLink
-            isActive={currentPage === i}
-            onClick={() => onPageChange(i)}
-            size={undefined}
-          >
-            {i}
-          </PaginationLink>
-        </PaginationItem>
-      );
-    }
-
-    // Add ellipsis at the start if needed
-    if (startPage > 1) {
-      items.unshift(
-        <PaginationItem key="start-ellipsis">
-          <PaginationLink size={undefined}>...</PaginationLink>
-        </PaginationItem>
-      );
-
-      // Add first page
-      items.unshift(
-        <PaginationItem key={1}>
-          <PaginationLink
-            isActive={currentPage === 1}
-            onClick={() => onPageChange(1)}
-            size={undefined}
-          >
-            1
-          </PaginationLink>
-        </PaginationItem>
-      );
-    }
-
-    // Add ellipsis at the end if needed
-    if (endPage < totalPages) {
-      items.push(
-        <PaginationItem key="end-ellipsis">
-          <PaginationLink size={undefined}>...</PaginationLink>
-        </PaginationItem>
-      );
-
-      // Add last page
-      items.push(
-        <PaginationItem key={totalPages}>
-          <PaginationLink
-            isActive={currentPage === totalPages}
-            onClick={() => onPageChange(totalPages)}
-            size={undefined}
-          >
-            {totalPages}
-          </PaginationLink>
-        </PaginationItem>
-      );
-    }
-
-    return items;
-  };
-
   return (
     <div className="space-y-8">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+      {/* Filters */}
+      <div className="flex flex-col md:flex-row items-start md:items-center gap-4 justify-between">
+        <Input
+          className="max-w-sm"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder={t("searchProducts")}
+        />
+
+        <div className="flex gap-4 items-center">
+          <Select value={sort} onValueChange={setSort}>
+            <SelectTrigger className="w-[120px]">
+              <SelectValue placeholder="Sort" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="asc">{t("sortAsc")}</SelectItem>
+              <SelectItem value="desc">{t("sortDesc")}</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
-      {totalPages > 1 && (
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                onClick={() => onPageChange(Math.max(1, currentPage - 1))}
-                isActive={currentPage !== 1}
-                className={
-                  currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
-                }
-                size={undefined}
-              />
-            </PaginationItem>
-
-            {renderPaginationItems()}
-
-            <PaginationItem>
-              <PaginationNext
-                onClick={() => {
-                  if (currentPage !== totalPages) {
-                    onPageChange(Math.min(totalPages, currentPage + 1));
-                  }
-                }}
-                className={
-                  currentPage === totalPages
-                    ? "cursor-not-allowed opacity-50"
-                    : ""
-                }
-                size={undefined}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      )}
+      <div className="flex justify-center items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {/* Animate presence only for products */}
+          {products.length === 0 ? (
+            <motion.div
+              key="no-products"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.5 }}
+              className="col-span-full text-center py-12 flex items-center gap-2 flex-col"
+            >
+              <NoDataIcon />
+              <p className="text-lg text-gray-500">{t("noProductsFound")}</p>
+            </motion.div>
+          ) : (
+            <AnimatePresence>
+              {products.map((product) => (
+                <motion.div
+                  key={product.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 20 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <ProductCard key={product.id} product={product} />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

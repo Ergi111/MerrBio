@@ -224,6 +224,7 @@ const dictionary = {
     accepted: "Accepted",
     rejected: "Rejected",
     requests: "Requests",
+    createAccount: "Krijo Llogari",
 
     // Purchase requests
     manageRequestsDescription:
@@ -343,7 +344,6 @@ const dictionary = {
     joinAs: "Regjistrohu si",
     loggingIn: "Duke hyrë...",
     noAccount: "Nuk keni llogari?",
-    createAccount: "Krijo Llogari",
     alreadyHaveAccount: "Keni tashmë një llogari?",
     creatingAccount: "Duke krijuar llogari...",
     loginRequired: "Hyrja e Nevojshme",

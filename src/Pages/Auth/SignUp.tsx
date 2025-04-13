@@ -107,7 +107,6 @@ export const SignUp = () => {
             name="password"
             label={t("password")}
             placeholder={t("passwordPlaceholder")}
-            type="password"
             showStrengthPopup
           />
 

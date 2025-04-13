@@ -16,6 +16,7 @@ import {
   FormLabel,
   FormMessage,
 } from "./ui/form";
+import { cn } from "../lib/utils";
 
 const checks = [
   { regex: /.{8,}/, weight: 0.25, message: "A minimum of 8 characters" },
@@ -32,18 +33,26 @@ const checks = [
   },
 ];
 
-// interface PasswordInputProps
-//   extends Omit<InputHTMLAttributes<HTMLInputElement> {
-//   showStrengthPopup?: boolean;
-//   name: string;
-// }
-
 interface PasswordInputProps extends InputHTMLAttributes<HTMLInputElement> {
   showStrengthPopup?: boolean;
   name: string;
   label?: string;
 }
 
+const getStrengthColor = (strength: string) => {
+  switch (strength) {
+    case "Weak":
+      return "text-red-500"; // Red color for "Weak"
+    case "Fair":
+      return "text-yellow-500"; // Yellow color for "Fair"
+    case "Good":
+      return "text-green-500"; // Green color for "Good"
+    case "Strong":
+      return "text-blue-500"; // Blue color for "Strong"
+    default:
+      return "text-gray-500"; // Default color for an unknown strength
+  }
+};
 export const PasswordInput: FC<PasswordInputProps> = ({
   showStrengthPopup = false,
   label,
@@ -101,7 +110,7 @@ export const PasswordInput: FC<PasswordInputProps> = ({
                     />
                   </TooltipTrigger>
                   <button
-                    className="absolute inset-y-0 right-2 px-3 flex items-center justify-center focus:outline-none cursor-pointer"
+                    className="absolute inset-y-0 right-2 px-3 flex items-center justify-center focus:outline-none cursor-pointer "
                     type="button"
                     onClick={() => setIsVisible(!isVisible)}
                   >
@@ -118,7 +127,11 @@ export const PasswordInput: FC<PasswordInputProps> = ({
                     )}
                   </button>
                   {showStrengthPopup && (
-                    <TooltipContent side="right" sideOffset={20}>
+                    <TooltipContent
+                      side="right"
+                      sideOffset={20}
+                      className="bg-white border"
+                    >
                       <div className="px-4 py-5 space-y-3">
                         <p className="text-md text-gray-700 font-medium">
                           Your password must have:
@@ -138,10 +151,15 @@ export const PasswordInput: FC<PasswordInputProps> = ({
                             </li>
                           ))}
                         </ul>
-                        <div className="space-y-3">
+                        <div className="space-y-3 text-black">
                           <div className="flex flex-row">
                             <p>Strength: </p>
-                            <p className="font-semibold">
+                            <p
+                              className={cn(
+                                "font-semibold",
+                                getStrengthColor(strengthLabel)
+                              )}
+                            >
                               &nbsp;
                               {strengthLabel}
                             </p>

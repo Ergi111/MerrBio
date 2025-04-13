@@ -66,10 +66,6 @@ export const App = createBrowserRouter([
             element: <PrivateRoutes />,
             children: [
               {
-                element: <FarmerDashboard />,
-                path: "/farmer",
-              },
-              {
                 element: <FarmerProducts />,
                 path: "/farmer/products",
               },

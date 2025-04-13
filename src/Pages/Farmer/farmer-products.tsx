@@ -1,7 +1,5 @@
 import { useLanguage } from "../../context/LanguageContext";
-// import { useAuth } from "@/hooks/use-auth";
 import { Navbar } from "../../components/NavBar";
-// import { useQuery, useMutation } from "@tanstack/react-query";
 import {
   Table,
   TableBody,
@@ -10,8 +8,6 @@ import {
   TableHeader,
   TableRow,
 } from "../../components/ui/table";
-// import { useToast } from "@/hooks/use-toast";
-// import { apiRequest, queryClient } from "@/lib/queryClient";
 import { PlusCircle } from "lucide-react";
 import { AddProductModal } from "../../components/AddProductModal";
 import { DeleteProductModal } from "../../components/product/DeleteProductModal";
@@ -58,7 +54,6 @@ export default function FarmerProducts() {
                       <TableHead>{t("productName")}</TableHead>
                       <TableHead>{t("category")}</TableHead>
                       <TableHead>{t("price")}</TableHead>
-                      <TableHead>{t("status")}</TableHead>
                       <TableHead className="text-right">
                         {t("actions")}
                       </TableHead>
@@ -76,18 +71,8 @@ export default function FarmerProducts() {
                           </div>
                         </TableCell>
                         <TableCell>{product.category}</TableCell>
-                        {/* <TableCell>
-                          €{Number(product.price).toFixed(2)}/{product.unit}
-                        </TableCell> */}
-                        {/* <TableCell>
-                          <Badge
-                            variant={
-                              product.inStock ? "default" : "destructive"
-                            }
-                          >
-                            {product.inStock ? t("inStock") : t("outOfStock")}
-                          </Badge>
-                        </TableCell> */}
+
+                        <TableCell>{product.price}</TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end space-x-2">
                             <EditProductModal product={product} />
