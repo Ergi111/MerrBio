@@ -21,7 +21,10 @@ export default function NotFound() {
             The page you are looking for might have been removed, had its name
             changed, or is temporarily unavailable.
           </p>
-          <Button onClick={() => navigate(routerPaths.home)} className="mt-6">
+          <Button
+            onClick={() => navigate(routerPaths.default)}
+            className="mt-6"
+          >
             Go to Home
           </Button>
         </CardContent>

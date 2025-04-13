@@ -23,8 +23,8 @@ export const MessageComponent = ({ msg, user }: MessageProps) => {
   return (
     <div className={cn("flex gap-2", me && "justify-end")}>
       <div>
-        <div className="flex items-center gap-2">
-          <p>{me ? "You" : user.fullName}</p>
+        <div className="flex items-center gap-2 mb-0.5">
+          <p className="text-sm">{me ? "You" : user.fullName}</p>
           <p className="text-xs">{formattedTime}</p>
         </div>
         <p

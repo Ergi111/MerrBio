@@ -1,3 +1,5 @@
+import { IUser } from "./user";
+
 export interface Product {
   id: string;
   productName: string;
@@ -9,4 +11,5 @@ export interface Product {
   updatedAt: string;
   farmerId: string;
   farmerName: string;
+  buyer?: IUser;
 }

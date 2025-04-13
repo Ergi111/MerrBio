@@ -66,7 +66,9 @@ export const SignIn = () => {
             placeholder={t("passwordPlaceholder")}
           />
 
-          <Button className="w-full">Login</Button>
+          <Button className="w-full" disabled={isSignedInLoading}>
+            Login
+          </Button>
         </form>
       </Form>
 

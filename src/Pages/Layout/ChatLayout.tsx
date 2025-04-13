@@ -21,7 +21,7 @@ export const ChatLayout = () => {
       <Outlet />
 
       {isAuthenticated && (
-        <div className="fixed bottom-0 right-0 mr-8 w-80 rounded-t-md bg-white shadow-lg">
+        <div className="fixed bottom-0 right-0 mr-8 w-80 rounded-t-md bg-white shadow-lg border">
           {/* Header */}
           <div
             className="flex items-center justify-between p-2 cursor-pointer bg-gray-100 rounded-t-md"

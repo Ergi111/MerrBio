@@ -9,6 +9,8 @@ import { Product } from "../../types/product";
 import { useAuth } from "../../context/useAuth";
 import { routerPaths } from "../../constants/routerPaths";
 import { useNavigate } from "react-router";
+import { useAskProduct } from "../../services/useAskProduct";
+import { getRoleFlags } from "../../utils/getRoleFlags";
 
 interface ProductCardProps {
   product: Product;
@@ -19,7 +21,9 @@ export function ProductCard({ product }: ProductCardProps) {
   const navigate = useNavigate();
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const { currentUser } = useAuth();
-
+  const { buyProduct } = useAskProduct();
+  const { isUser } = getRoleFlags(currentUser?.role);
+  const isBought = product?.buyer?.id === currentUser?.id;
   // Get category badge color
   const getCategoryColor = (category: string) => {
     switch (category.toLowerCase()) {
@@ -100,19 +104,25 @@ export function ProductCard({ product }: ProductCardProps) {
               {/* €{Number(product.price).toFixed(2)}/{product.unit} */}€
               {formattedPrice}/kg
             </span>
-            <Button
-              size="sm"
-              onClick={(e) => {
-                e.stopPropagation();
-                if (!currentUser) {
-                  navigate(routerPaths.signIn);
-                }
-              }}
-              // disabled={!product.inStock}
-            >
-              <ShoppingCart className="h-4 w-4 mr-1" />
-              {t("requestToBuy")}
-            </Button>
+            {isUser && (
+              <Button
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (!currentUser) {
+                    navigate(routerPaths.signIn);
+                    return;
+                  }
+                  if (!isBought) {
+                    buyProduct(product.id);
+                  }
+                }}
+                // disabled={!product.inStock}
+              >
+                <ShoppingCart className="h-4 w-4 mr-1" />
+                {t("requestToBuy")}
+              </Button>
+            )}
           </div>
           <div className="mt-3 flex items-center text-sm text-gray-500">
             <User className="h-4 w-4 mr-1" />
