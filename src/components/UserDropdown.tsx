@@ -1,5 +1,3 @@
-import { ChevronDown } from "lucide-react";
-import { Button } from "./ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,20 +6,21 @@ import {
 } from "./ui/dropdown";
 import { useLanguage } from "../context/LanguageContext";
 import { useAuth } from "../context/useAuth";
+import { UserAvatar } from "./user/UserAvatar";
+import { getRoleFlags } from "../utils/getRoleFlags";
+import { Link } from "react-router";
 
 export const UserDropdown = () => {
   const { t } = useLanguage();
-  const { signOut } = useAuth();
+  const { signOut, currentUser } = useAuth();
+  const { isFarmer, isAdmin } = getRoleFlags(currentUser?.role);
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="flex items-center">
-          <span className="font-medium">{"userNAME "}</span>
-          <ChevronDown className="h-4 w-4 ml-1" />
-        </Button>
+      <DropdownMenuTrigger className="cursor-pointer">
+        <UserAvatar name={currentUser?.fullName} id={currentUser?.id} />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        {/* {user.role === "farmer" ? (
+        {isFarmer ? (
           <>
             <DropdownMenuItem asChild>
               <Link to="/farmer/dashboard">{t("dashboard")}</Link>
@@ -37,7 +36,7 @@ export const UserDropdown = () => {
           <DropdownMenuItem asChild>
             <Link to="/products">{t("browseProducts")}</Link>
           </DropdownMenuItem>
-        )} */}
+        )}
         <DropdownMenuItem onClick={signOut}>{t("logout")}</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

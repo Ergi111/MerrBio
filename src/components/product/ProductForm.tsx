@@ -18,9 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../components/ui/select";
-// import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "../../context/LanguageContext";
-import { productSchema } from "../../schema/schema";
 import { useCreateProduct } from "../../services/useCreateProduct";
 import { useAuth } from "../../context/useAuth";
 import { FormInput } from "../form/FormInput";
@@ -93,6 +91,8 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
       });
     }
   };
+
+  const loading = isCreateLoading || isEditLoading;
   console.log(form.formState.errors);
   return (
     <Form {...form}>
@@ -121,26 +121,6 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* <FormField
-            control={form.control}
-            name="price"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("productPrice")}</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="0.00"
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
-
           <FormInput
             name="price"
             label={t("productPrice")}
@@ -178,7 +158,7 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
           )}
         />
 
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="w-full" disabled={loading}>
           {product ? t("updateProduct") : t("addProduct")}
         </Button>
       </form>

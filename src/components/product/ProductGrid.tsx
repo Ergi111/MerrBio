@@ -8,10 +8,11 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "../ui/pagination";
-import { InsertProduct } from "../../schema/schema";
+import { Product } from "../../types/product";
+import { NoDataIcon } from "../../assets/icons/NoDataIcon";
 
 interface ProductGridProps {
-  products: InsertProduct[];
+  products: Product[];
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
@@ -27,8 +28,11 @@ export function ProductGrid({
 
   if (products.length === 0) {
     return (
-      <div className="w-full text-center py-12">
+      <div className="w-full text-center py-12 flex flex-col items-center justify-center gap-4">
         <p className="text-gray-500 text-lg">{t("noProductsFound")}</p>
+        <div>
+          <NoDataIcon />
+        </div>
       </div>
     );
   }

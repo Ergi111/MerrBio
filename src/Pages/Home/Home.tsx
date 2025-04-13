@@ -1,9 +1,8 @@
-import { Navbar } from "../../components/NavBar";
 import { Button } from "../../components/ui/button";
 import { useLanguage } from "../../context/LanguageContext";
 // import { useQuery } from "@tanstack/react-query";
 import { ProductCard } from "../../components/product/ProductCard";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import {
   Leaf,
   Handshake,
@@ -12,65 +11,13 @@ import {
   Sprout,
   Heart,
 } from "lucide-react";
-// import { InsertProduct } from "../../schema/schema";
+import { routerPaths } from "../../constants/routerPaths";
+import { staticProducts } from "../../constants/staticProducts";
 
 export default function Home() {
   const { t } = useLanguage();
 
-  const products = [
-    {
-      id: 1,
-      name: "Fresh Tomatoes",
-      description: "Freshly picked organic tomatoes from local farms.",
-      price: "2.5",
-      unit: "kg",
-      category: "Vegetables",
-      inStock: true,
-      farmerId: 101,
-      farmerName: "John's Farm",
-      imageUrl:
-        "https://images.unsplash.com/photo-1519996529931-28324d5a630e?auto=format&fit=crop&w=800&h=400&q=80",
-    },
-    {
-      id: 2,
-      name: "Organic Apples",
-      description: "Crisp and juicy organic apples.",
-      price: "3.0",
-      unit: "kg",
-      category: "Fruits",
-      inStock: true,
-      farmerId: 102,
-      farmerName: "Green Valley Orchards",
-      imageUrl:
-        "https://images.unsplash.com/photo-1595506635416-cd66df435f07?auto=format&fit=crop&w=800&q=80",
-    },
-    {
-      id: 3,
-      name: "Farm Fresh Eggs",
-      description: "Free-range eggs from healthy hens.",
-      price: "4.0",
-      unit: "dozen",
-      category: "Dairy",
-      inStock: true,
-      farmerId: 103,
-      farmerName: "Sunny Side Farm",
-      imageUrl:
-        "https://images.unsplash.com/photo-1595506635416-cd66df435f07?auto=format&fit=crop&w=800&q=80",
-    },
-    {
-      id: 4,
-      name: "Grass-fed Beef",
-      description: "Premium quality grass-fed beef.",
-      price: "10.0",
-      unit: "kg",
-      category: "Meat",
-      inStock: true,
-      farmerId: 104,
-      farmerName: "Highland Ranch",
-      imageUrl:
-        "https://images.unsplash.com/photo-1595506635416-cd66df435f07?auto=format&fit=crop&w=800&q=80",
-    },
-  ];
+  const navigate = useNavigate();
 
   // Fetch featured products
   // const { data: products } = useQuery<InsertProduct[]>({
@@ -78,9 +25,7 @@ export default function Home() {
   // });
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-
+    <>
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-primary/90 to-primary text-white py-12 sm:py-16">
         <div className="container mx-auto px-4">
@@ -107,7 +52,7 @@ export default function Home() {
       </section>
 
       {/* Featured Products Section */}
-      {products && products.length > 0 && (
+      {staticProducts && staticProducts.length > 0 && (
         <section className="py-12 bg-white">
           <div className="container mx-auto px-4">
             <div className="flex justify-between items-center mb-8">
@@ -122,7 +67,7 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {products.slice(0, 4).map((product) => (
+              {staticProducts.slice(0, 4).map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
@@ -226,26 +171,24 @@ export default function Home() {
             {t("joinCommunityDescription")}
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link to="/signin">
-              <Button
-                size="lg"
-                variant="secondary"
-                className="bg-white text-amber-700 hover:bg-white/90"
-              >
-                {t("joinAsFarmer")}
-              </Button>
-            </Link>
-            <Link to="/signin">
-              <Button
-                size="lg"
-                className="bg-primary text-white hover:bg-primary/90"
-              >
-                {t("joinAsConsumer")}
-              </Button>
-            </Link>
+            <Button
+              size="lg"
+              variant="secondary"
+              className="bg-white text-amber-700 hover:bg-white/90"
+              onClick={() => navigate(routerPaths.signIn)}
+            >
+              {t("joinAsFarmer")}
+            </Button>
+            <Button
+              size="lg"
+              className="bg-primary text-white hover:bg-primary/90"
+              onClick={() => navigate(routerPaths.signIn)}
+            >
+              {t("joinAsConsumer")}
+            </Button>
           </div>
         </div>
       </section>
-    </div>
+    </>
   );
 }

@@ -54,7 +54,7 @@ export const App = createBrowserRouter([
 
           {
             element: <ProductsPage />,
-            path: "/products",
+            path: routerPaths.products,
           },
         ],
       },

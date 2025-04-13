@@ -16,10 +16,12 @@ import {
   TabsTrigger,
 } from "../../components/ui/tabs";
 import { Package, ShoppingCart, PlusCircle, ChevronRight } from "lucide-react";
+import { PageHeader } from "../../components/PageHeader";
+import { useAuth } from "../../context/useAuth";
 
 export default function FarmerDashboard() {
   const { t } = useLanguage();
-  const user = [{ id: 1, name: "John Doe", role: "farmer" }];
+  const { currentUser } = useAuth();
   const products = [
     { id: 1, name: "Tomatoes", price: 2.5, unit: "kg", inStock: true },
     { id: 2, name: "Potatoes", price: 1.5, unit: "kg", inStock: false },
@@ -41,14 +43,10 @@ export default function FarmerDashboard() {
 
       <div className="flex-grow bg-gray-50 py-8">
         <div className="container mx-auto px-4">
-          <header className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">
-              {t("farmerDashboard")}
-            </h1>
-            <p className="text-gray-500 mt-1">
-              {t("welcomeFarmer")}, {user[0]?.name}!
-            </p>
-          </header>
+          <PageHeader
+            title={t("farmerDashboard")}
+            subTitle={`${t("welcomeFarmer")}, `}
+          />
 
           {/* Dashboard Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">

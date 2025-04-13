@@ -2,7 +2,6 @@ import { useLanguage } from "../../context/LanguageContext";
 // import { useAuth } from "@/hooks/use-auth";
 import { Navbar } from "../../components/NavBar";
 // import { useQuery, useMutation } from "@tanstack/react-query";
-import { Button } from "../../components/ui/button";
 import {
   Table,
   TableBody,
@@ -13,20 +12,22 @@ import {
 } from "../../components/ui/table";
 // import { useToast } from "@/hooks/use-toast";
 // import { apiRequest, queryClient } from "@/lib/queryClient";
-import { ArrowLeft, PlusCircle } from "lucide-react";
-import { Link } from "react-router";
+import { PlusCircle } from "lucide-react";
 import { AddProductModal } from "../../components/AddProductModal";
 import { DeleteProductModal } from "../../components/product/DeleteProductModal";
 import { EditProductModal } from "../../components/product/EditProductModal";
 import { useFetchFarmerProducts } from "../../services/useGetFarmerProducts";
 import { useAuth } from "../../context/useAuth";
 import { NoDataYet } from "../../components/NoDataYet";
+import { PageHeader } from "../../components/PageHeader";
 
 export default function FarmerProducts() {
   const { t } = useLanguage();
   const { currentUser } = useAuth();
 
-  const { products, loading } = useFetchFarmerProducts(currentUser?.id);
+  const { products, loading } = useFetchFarmerProducts(
+    currentUser?.id as string
+  );
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -34,27 +35,13 @@ export default function FarmerProducts() {
 
       <div className="flex-grow bg-gray-50 py-8">
         <div className="container mx-auto px-4">
-          <header className="mb-8">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-              <div className="flex items-center mb-4 md:mb-0">
-                <Link to="/farmer">
-                  <Button variant="ghost" size="sm" className="mr-2">
-                    <ArrowLeft className="h-4 w-4 mr-1" />
-                    {t("back")}
-                  </Button>
-                </Link>
-                <div>
-                  <h1 className="text-3xl font-bold text-gray-900">
-                    {t("manageProducts")}
-                  </h1>
-                  <p className="text-gray-500 mt-1">
-                    {t("manageProductsDescription")}
-                  </p>
-                </div>
-              </div>
-              <AddProductModal />
-            </div>
-          </header>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+            <PageHeader
+              title={t("manageProducts")}
+              subTitle={t("manageProductsDescription")}
+            />
+            <AddProductModal />
+          </div>
           {/* Products Table */}
           <div className="bg-white rounded-lg shadow overflow-hidden">
             {products?.length === 0 ? (

@@ -2,34 +2,23 @@ import { Card, CardContent } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { useLanguage } from "../../context/LanguageContext";
-// import { useState } from "react";
-// import { useAuth } from "@/hooks/use-auth";
 import { User, ShoppingCart } from "lucide-react";
-// import { useToast } from "@/hooks/use-toast";
-import { InsertProduct } from "../../schema/schema";
+import { ProductDetailsModal } from "./ProductDetailsModal";
+import { useState } from "react";
+import { Product } from "../../types/product";
+import { useAuth } from "../../context/useAuth";
+import { routerPaths } from "../../constants/routerPaths";
+import { useNavigate } from "react-router";
 
 interface ProductCardProps {
-  product: InsertProduct;
+  product: Product;
 }
 
 export function ProductCard({ product }: ProductCardProps) {
   const { t } = useLanguage();
-  // const { user } = useAuth();
-  // const { toast } = useToast();
-  // const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
-
-  const user = JSON.parse(localStorage.getItem("user") || "null");
-  interface ToastOptions {
-    title: string;
-    description: string;
-    variant: "success" | "error" | "destructive" | "info";
-  }
-
-  const toast = (options: ToastOptions) => {
-    console.log(options.title);
-    console.log(options.description);
-    console.log(options.variant);
-  };
+  const navigate = useNavigate();
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const { currentUser } = useAuth();
 
   // Get category badge color
   const getCategoryColor = (category: string) => {
@@ -53,64 +42,46 @@ export function ProductCard({ product }: ProductCardProps) {
     }
   };
 
-  // Placeholder images for products by category
-  const getCategoryImage = (category: string) => {
-    switch (category.toLowerCase()) {
-      case "vegetables":
-        return "https://images.unsplash.com/photo-1519996529931-28324d5a630e?auto=format&fit=crop&w=800&h=400&q=80";
-      case "fruits":
-        return "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=800&h=400&q=80";
-      case "dairy":
-        return "https://images.unsplash.com/photo-1621265838864-d814e5a33b78?auto=format&fit=crop&w=800&h=400&q=80";
-      case "meat":
-        return "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=800&h=400&q=80";
-      case "poultry":
-        return "https://images.unsplash.com/photo-1571680322279-a226e7259614?auto=format&fit=crop&w=800&h=400&q=80";
-      case "bakery":
-        return "https://images.unsplash.com/photo-1589927986089-35812388d1f4?auto=format&fit=crop&w=800&h=400&q=80";
-      case "specialty":
-        return "https://images.unsplash.com/photo-1628689469838-524a4a973b8e?auto=format&fit=crop&w=800&h=400&q=80";
-      default:
-        return "https://images.unsplash.com/photo-1595506635416-cd66df435f07?auto=format&fit=crop&w=800&h=400&q=80";
-    }
-  };
-
-  const handleRequestClick = () => {
-    if (!user) {
-      toast({
-        title: t("loginRequired"),
-        description: t("loginToRequestProduct"),
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (user.role === "farmer") {
-      toast({
-        title: t("cannotBuyAsfarmer"),
-        description: t("switchToConsumerAccount"),
-        variant: "destructive",
-      });
-      return;
-    }
-
-    // setIsRequestModalOpen(true);
-  };
+  // // Placeholder images for products by category
+  // const getCategoryImage = (category: string) => {
+  //   switch (category.toLowerCase()) {
+  //     case "vegetables":
+  //       return "https://images.unsplash.com/photo-1519996529931-28324d5a630e?auto=format&fit=crop&w=800&h=400&q=80";
+  //     case "fruits":
+  //       return "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=800&h=400&q=80";
+  //     case "dairy":
+  //       return "https://images.unsplash.com/photo-1621265838864-d814e5a33b78?auto=format&fit=crop&w=800&h=400&q=80";
+  //     case "meat":
+  //       return "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=800&h=400&q=80";
+  //     case "poultry":
+  //       return "https://images.unsplash.com/photo-1571680322279-a226e7259614?auto=format&fit=crop&w=800&h=400&q=80";
+  //     case "bakery":
+  //       return "https://images.unsplash.com/photo-1589927986089-35812388d1f4?auto=format&fit=crop&w=800&h=400&q=80";
+  //     case "specialty":
+  //       return "https://images.unsplash.com/photo-1628689469838-524a4a973b8e?auto=format&fit=crop&w=800&h=400&q=80";
+  //     default:
+  //       return "https://images.unsplash.com/photo-1595506635416-cd66df435f07?auto=format&fit=crop&w=800&h=400&q=80";
+  //   }
+  // };
 
   return (
     <>
-      <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+      <Card
+        className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+        onClick={() => setIsDetailsOpen(true)}
+      >
         <div className="relative h-48 w-full overflow-hidden">
           <img
-            src={getCategoryImage(product.category)}
-            alt={product.name}
+            // src={getCategoryImage(product.category)}
+            src={product.imageUrl}
+            alt={product.imageUrl}
             className="w-full h-full object-cover transition-transform hover:scale-105 duration-300"
           />
         </div>
         <CardContent className="p-4">
           <div className="flex justify-between items-start mb-2">
             <h3 className="text-lg font-medium text-gray-900">
-              {product.name}
+              {product.productName}
             </h3>
             <Badge className={getCategoryColor(product.category)}>
               {product.category}
@@ -121,12 +92,18 @@ export function ProductCard({ product }: ProductCardProps) {
           </p>
           <div className="flex justify-between items-center">
             <span className="text-lg font-semibold text-gray-900">
-              €{Number(product.price).toFixed(2)}/{product.unit}
+              {/* €{Number(product.price).toFixed(2)}/{product.unit} */}€
+              {Number(product.price).toFixed(2)}/kg
             </span>
             <Button
               size="sm"
-              onClick={handleRequestClick}
-              disabled={!product.inStock}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (!currentUser) {
+                  navigate(routerPaths.signIn);
+                }
+              }}
+              // disabled={!product.inStock}
             >
               <ShoppingCart className="h-4 w-4 mr-1" />
               {t("requestToBuy")}
@@ -140,14 +117,11 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
         </CardContent>
       </Card>
-
-      {/* {isRequestModalOpen && (
-        <RequestModal
-          product={product}
-          isOpen={isRequestModalOpen}
-          onClose={() => setIsRequestModalOpen(false)}
-        />
-      )} */}
+      <ProductDetailsModal
+        onClose={() => setIsDetailsOpen(false)}
+        open={isDetailsOpen}
+        product={product}
+      />
     </>
   );
 }

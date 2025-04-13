@@ -9,4 +9,8 @@ export const routerPaths = {
 
   //
   adminDashboard: "/admin/dashboard",
+
+  //
+
+  products: "/products",
 };
