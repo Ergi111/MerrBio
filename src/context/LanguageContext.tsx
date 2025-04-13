@@ -254,6 +254,7 @@ const dictionary = {
     recently: "Recently",
     quantityValueUnit: "Quantity: {{quantity}}",
     confirmPassword: "Confirm password",
+    confirmPasswordPlaceholder: "Enter your password again",
   },
 
   sq: {
@@ -356,7 +357,7 @@ const dictionary = {
     nameMin: "Emri duhet të ketë të paktën 3 karaktere",
     emailInvalid: "Ju lutemi vendosni një adresë email të vlefshme",
     roleRequired: "Ju lutemi zgjidhni një rol",
-
+    confirmPasswordPlaceholder: "Konfirmo fjalëkalimin tuaj",
     // Products
     allProducts: "Të Gjitha Produktet",
     productsFound: "produkte të gjetura",
