@@ -30,6 +30,7 @@ import {
   Package,
   Truck,
 } from "lucide-react";
+import { useGetProducts } from "../../services/useGetProducts";
 
 type Request = {
   id: number;
@@ -46,6 +47,7 @@ export default function FarmerRequests() {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [messageToConsumer, setMessageToConsumer] = useState("");
   const navigate = useNavigate();
+
   const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
 
   const requests = [
