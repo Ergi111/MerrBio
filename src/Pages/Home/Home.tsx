@@ -13,10 +13,11 @@ import {
 } from "lucide-react";
 import { routerPaths } from "../../constants/routerPaths";
 import { staticProducts } from "../../constants/staticProducts";
+import { useAuth } from "../../context/useAuth";
 
 export default function Home() {
   const { t } = useLanguage();
-
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   // Fetch featured products
@@ -164,29 +165,49 @@ export default function Home() {
       {/* Join Section */}
       <section className="py-16 bg-gradient-to-r from-amber-700 to-amber-700/80 text-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-6">
-            {t("joinCommunity")}
-          </h2>
-          <p className="text-lg mb-8 max-w-2xl mx-auto text-white/90">
-            {t("joinCommunityDescription")}
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button
-              size="lg"
-              variant="secondary"
-              className="bg-white text-amber-700 hover:bg-white/90"
-              onClick={() => navigate(routerPaths.signIn)}
-            >
-              {t("joinAsFarmer")}
-            </Button>
-            <Button
-              size="lg"
-              className="bg-primary text-white hover:bg-primary/90"
-              onClick={() => navigate(routerPaths.signIn)}
-            >
-              {t("joinAsConsumer")}
-            </Button>
-          </div>
+          {isAuthenticated ? (
+            <>
+              <h2 className="text-2xl sm:text-3xl font-bold mb-6">
+                {t("welcomeBack")} {/* Change message when user is logged in */}
+              </h2>
+              <p className="text-lg mb-8 max-w-2xl mx-auto text-white/90">
+                Thank you for being a part of our community!
+              </p>
+              <Button
+                size="lg"
+                className="bg-primary text-white hover:bg-primary/90"
+                onClick={() => navigate(routerPaths.products)}
+              >
+                Go to Products
+              </Button>
+            </>
+          ) : (
+            <>
+              <h2 className="text-2xl sm:text-3xl font-bold mb-6">
+                {t("joinCommunity")}
+              </h2>
+              <p className="text-lg mb-8 max-w-2xl mx-auto text-white/90">
+                {t("joinCommunityDescription")}
+              </p>
+              <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="bg-white text-amber-700 hover:bg-white/90"
+                  onClick={() => navigate(routerPaths.signIn)}
+                >
+                  {t("joinAsFarmer")}
+                </Button>
+                <Button
+                  size="lg"
+                  className="bg-primary text-white hover:bg-primary/90"
+                  onClick={() => navigate(routerPaths.signIn)}
+                >
+                  {t("joinAsConsumer")}
+                </Button>
+              </div>
+            </>
+          )}
         </div>
       </section>
     </>
