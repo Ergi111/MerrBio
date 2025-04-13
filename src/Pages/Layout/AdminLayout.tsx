@@ -21,7 +21,7 @@ export const AdminLayout = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>{t("productName")}</TableHead>
+              <TableHead>{t("name")}</TableHead>
               <TableHead>{t("email")}</TableHead>
               <TableHead>{t("role")}</TableHead>
             </TableRow>
