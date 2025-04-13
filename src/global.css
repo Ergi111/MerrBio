@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+@tailwind utilities;
+
+/* html {
+  scrollbar-gutter: stable both-edges;
+} */

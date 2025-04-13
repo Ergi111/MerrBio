@@ -75,9 +75,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         throw new Error("User not found");
       }
       return userData;
-    } catch (error: any) {
+    } catch (error) {
+      toast.error("Invalid email or password");
       setIsSignedInLoading(false);
-      console.error("Sign in error:", error.message);
       throw error;
     }
   };

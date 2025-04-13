@@ -13,4 +13,4 @@ export const routerPaths = {
   //
 
   products: "/products",
-};
+} as const;

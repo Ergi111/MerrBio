@@ -14,13 +14,14 @@ import AuthLayout from "../Pages/Layout/AuthLayout";
 import { routerPaths } from "../constants/routerPaths";
 import { SignUp } from "../Pages/Auth/SignUp";
 import NotFound from "../components/not-found";
+import { ChatLayout } from "../Pages/Layout/ChatLayout";
 
 export const AppLayout = () => {
   return (
     <AuthProvider>
       <LanguageProvider>
         <Outlet />
-        <Toaster richColors />
+        <Toaster richColors position="top-right" />
       </LanguageProvider>
     </AuthProvider>
   );
@@ -32,49 +33,108 @@ export const App = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       {
-        element: <PublicRoutes />,
+        element: <ChatLayout />,
         children: [
           {
-            element: <Home />,
-            path: "/",
-          },
-          {
-            element: <AuthLayout />,
+            element: <PublicRoutes />,
             children: [
               {
-                element: <SignIn />,
-                path: routerPaths.signIn,
+                element: <Home />,
+                path: "/",
               },
               {
-                element: <SignUp />,
-                path: routerPaths.signUp,
+                element: <AuthLayout />,
+                children: [
+                  {
+                    element: <SignIn />,
+                    path: routerPaths.signIn,
+                  },
+                  {
+                    element: <SignUp />,
+                    path: routerPaths.signUp,
+                  },
+                ],
+              },
+
+              {
+                element: <ProductsPage />,
+                path: routerPaths.products,
               },
             ],
           },
-
           {
-            element: <ProductsPage />,
-            path: routerPaths.products,
-          },
-        ],
-      },
-      {
-        element: <PrivateRoutes />,
-        children: [
-          {
-            element: <FarmerDashboard />,
-            path: "/farmer",
-          },
-          {
-            element: <FarmerProducts />,
-            path: "/farmer/products",
-          },
-          {
-            element: <FarmerRequests />,
-            path: "/farmer/requests",
+            element: <PrivateRoutes />,
+            children: [
+              {
+                element: <FarmerDashboard />,
+                path: "/farmer",
+              },
+              {
+                element: <FarmerProducts />,
+                path: "/farmer/products",
+              },
+              {
+                element: <FarmerRequests />,
+                path: "/farmer/requests",
+              },
+              {
+                element: <div>Admin</div>,
+                path: routerPaths.adminDashboard,
+              },
+            ],
           },
         ],
       },
     ],
+    // children: [
+    //   {
+    //     element: <PublicRoutes />,
+    //     children: [
+    //       {
+    //         element: <Home />,
+    //         path: "/",
+    //       },
+    //       {
+    //         element: <AuthLayout />,
+    //         children: [
+    //           {
+    //             element: <SignIn />,
+    //             path: routerPaths.signIn,
+    //           },
+    //           {
+    //             element: <SignUp />,
+    //             path: routerPaths.signUp,
+    //           },
+    //         ],
+    //       },
+
+    //       {
+    //         element: <ProductsPage />,
+    //         path: routerPaths.products,
+    //       },
+    //     ],
+    //   },
+    //   {
+    //     element: <PrivateRoutes />,
+    //     children: [
+    //       {
+    //         element: <FarmerDashboard />,
+    //         path: "/farmer",
+    //       },
+    //       {
+    //         element: <FarmerProducts />,
+    //         path: "/farmer/products",
+    //       },
+    //       {
+    //         element: <FarmerRequests />,
+    //         path: "/farmer/requests",
+    //       },
+    //       {
+    //         element: <div>Admin</div>,
+    //         path: routerPaths.adminDashboard,
+    //       },
+    //     ],
+    //   },
+    // ],
   },
 ]);

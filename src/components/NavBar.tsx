@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router";
+import { Link, NavLink } from "react-router";
 import { useState } from "react";
 import { useLanguage } from "../context/LanguageContext"; // Updated to use alias
 import { Button } from "../components/ui/button"; // Updated to use alias
@@ -7,6 +7,7 @@ import { Leaf, Menu, X } from "lucide-react";
 import {} from "../components/ui/dropdown";
 import { LanguageDropdown } from "./LanguageDropdown";
 import { UserDropdown } from "./UserDropdown";
+import { routerPaths } from "../constants/routerPaths";
 
 export function Navbar() {
   const user = {
@@ -27,7 +28,6 @@ export function Navbar() {
   };
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const location = useLocation();
   const { language, setLanguage, t } = useLanguage();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -48,14 +48,14 @@ export function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link
-              to="/"
+            <NavLink
+              to={routerPaths.default}
               className={`text-gray-800 hover:text-primary px-3 py-2 text-sm font-medium transition-colors ${
                 location.pathname === "/" ? "text-primary" : ""
               }`}
             >
               {t("home")}
-            </Link>
+            </NavLink>
             <Link
               to="/products"
               className={`text-gray-800 hover:text-primary px-3 py-2 text-sm font-medium transition-colors ${

@@ -7,9 +7,24 @@ import {
 } from "../../components/ui/tabs";
 import { SignUp } from "../Auth/SignUp";
 import { SignIn } from "../Auth/SignIn";
+import { useAuth } from "../../context/useAuth";
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
+import { routerPaths } from "../../constants/routerPaths";
 
 export default function AuthLayout() {
   const { t } = useLanguage();
+  const navigate = useNavigate();
+  const { isAuthenticated, userLoading } = useAuth();
+
+  useEffect(() => {
+    if (userLoading) {
+      return;
+    }
+    if (isAuthenticated) {
+      navigate(routerPaths.default);
+    }
+  }, [isAuthenticated, navigate, userLoading]);
 
   return (
     <div className="min-h-screen flex flex-col">

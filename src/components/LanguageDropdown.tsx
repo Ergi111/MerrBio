@@ -11,7 +11,7 @@ import { useLanguage } from "../context/LanguageContext";
 export const LanguageDropdown = () => {
   const { language, setLanguage } = useLanguage();
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="sm" className="flex items-center">
           <Globe className="h-4 w-4 mr-1" />
