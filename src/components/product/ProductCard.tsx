@@ -54,7 +54,7 @@ export function ProductCard({ product }: ProductCardProps) {
       case "fruits":
         return "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=800&h=400&q=80";
       case "dairy":
-        return "https://images.unsplash.com/photo-1621265838864-d814e5a33b78?auto=format&fit=crop&w=800&h=400&q=80";
+        return "https://images.pexels.com/photos/2985167/pexels-photo-2985167.jpeg?auto=compress&cs=tinysrgb&w=1200";
       case "meat":
         return "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=800&h=400&q=80";
       case "poultry":
