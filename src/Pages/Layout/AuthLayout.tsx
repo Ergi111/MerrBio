@@ -5,18 +5,16 @@ import {
   TabsList,
   TabsTrigger,
 } from "../../components/ui/tabs";
-import { SignUp } from "../Auth/SignUp";
-import { SignIn } from "../Auth/SignIn";
 import { useAuth } from "../../context/useAuth";
 import { useEffect } from "react";
-import { useNavigate } from "react-router";
+import { Outlet, useLocation, useNavigate } from "react-router";
 import { routerPaths } from "../../constants/routerPaths";
 
 export default function AuthLayout() {
   const { t } = useLanguage();
   const navigate = useNavigate();
   const { isAuthenticated, userLoading } = useAuth();
-
+  const location = useLocation();
   useEffect(() => {
     if (userLoading) {
       return;
@@ -62,18 +60,28 @@ export default function AuthLayout() {
 
               {/* Auth forms */}
               <div className="md:w-1/2 p-8 md:order-1">
-                <Tabs className="w-full">
+                <Tabs className="w-full" value={location.pathname}>
                   <TabsList className="grid w-full grid-cols-2 mb-6">
-                    <TabsTrigger value="login">{t("login")}</TabsTrigger>
-                    <TabsTrigger value="register">{t("register")}</TabsTrigger>
+                    <TabsTrigger
+                      value={routerPaths.signIn}
+                      onClick={() => navigate(routerPaths.signIn)}
+                    >
+                      {t("login")}
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value={routerPaths.signUp}
+                      onClick={() => navigate(routerPaths.signUp)}
+                    >
+                      {t("register")}
+                    </TabsTrigger>
                   </TabsList>
 
-                  <TabsContent value="login">
-                    <SignIn />
+                  <TabsContent value={routerPaths.signIn}>
+                    <Outlet />
                   </TabsContent>
 
-                  <TabsContent value="register">
-                    <SignUp />
+                  <TabsContent value={routerPaths.signUp}>
+                    <Outlet />
                   </TabsContent>
                 </Tabs>
               </div>
