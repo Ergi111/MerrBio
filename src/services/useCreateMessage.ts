@@ -44,7 +44,6 @@ export const useCreateMessage = () => {
         senderId,
         text,
         createdAt: serverTimestamp(),
-        read: false,
       });
       setLoading(false);
     } catch (error) {

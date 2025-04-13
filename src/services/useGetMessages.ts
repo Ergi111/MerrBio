@@ -2,10 +2,15 @@ import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../config/firebase-config";
 
-interface Message {}
+export interface Message {
+  text: string;
+  senderId: string;
+  createdAt: string;
+  id: string;
+}
 
 export const useGetMessages = (conversationId: string) => {
-  const [messages, setMessages] = useState<any[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -18,13 +23,18 @@ export const useGetMessages = (conversationId: string) => {
       "messages"
     );
 
-    const q = query(messagesRef, orderBy("timestamp", "asc"));
+    const q = query(messagesRef, orderBy("createdAt", "asc"));
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const msgs = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+      const msgs = snapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          text: data.text || "",
+          senderId: data.senderId || "",
+          createdAt: data.createdAt || "",
+        } as Message;
+      });
       setMessages(msgs);
       setLoading(false);
     });
