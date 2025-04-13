@@ -6,7 +6,7 @@ import { SignIn } from "../Pages/Auth/SignIn";
 import ProductsPage from "../components/products-page";
 import { LanguageProvider } from "../context/LanguageContext";
 import Home from "../Pages/Home/Home";
-import FarmerDashboard from "../Pages/Farmer/farmer-dashboard";
+// import FarmerDashboard from "../Pages/Farmer/farmer-dashboard";
 import FarmerProducts from "../Pages/Farmer/farmer-products";
 import FarmerRequests from "../Pages/Farmer/farmer-requests";
 import { AuthProvider } from "../context/useAuth";
@@ -15,6 +15,7 @@ import { routerPaths } from "../constants/routerPaths";
 import { SignUp } from "../Pages/Auth/SignUp";
 import NotFound from "../components/not-found";
 import { ChatLayout } from "../Pages/Layout/ChatLayout";
+import { AdminLayout } from "../Pages/Layout/AdminLayout";
 
 export const AppLayout = () => {
   return (
@@ -74,7 +75,7 @@ export const App = createBrowserRouter([
                 path: "/farmer/requests",
               },
               {
-                element: <div>Admin</div>,
+                element: <AdminLayout />,
                 path: routerPaths.adminDashboard,
               },
             ],
